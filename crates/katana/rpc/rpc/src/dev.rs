@@ -1,13 +1,18 @@
 use std::sync::Arc;
 
-use jsonrpsee::core::{async_trait, Error};
+use jsonrpsee::core::{async_trait, Error, RpcResult};
 use katana_core::backend::Backend;
 use katana_core::service::block_producer::{BlockProducer, BlockProducerMode, PendingExecutor};
 use katana_executor::ExecutorFactory;
 use katana_primitives::Felt;
+use katana_rpc_api::cartridge::CartridgeApiServer;
 use katana_rpc_api::dev::DevApiServer;
 use katana_rpc_types::account::Account;
 use katana_rpc_types::error::dev::DevApiError;
+
+use katana_rpc_types::trace::TxExecutionInfo;
+use katana_rpc_types::transaction::BroadcastedInvokeTx;
+use tracing::info;
 
 #[allow(missing_debug_implementations)]
 pub struct DevApi<EF: ExecutorFactory> {
@@ -94,5 +99,17 @@ impl<EF: ExecutorFactory> DevApiServer for DevApi<EF> {
 
     async fn predeployed_accounts(&self) -> Result<Vec<Account>, Error> {
         Ok(self.backend.chain_spec.genesis().accounts().map(|e| Account::new(*e.0, e.1)).collect())
+    }
+}
+
+#[async_trait]
+impl<EF: ExecutorFactory> CartridgeApiServer for DevApi<EF> {
+    #[doc = "Exectues transaction on behalf of caller."]
+    async fn add_execute_outside_transaction(
+        &self,
+        invoke_transaction: BroadcastedInvokeTx,
+    ) -> RpcResult<Vec<TxExecutionInfo>> {
+        info!("TEST");
+        Ok(vec![])
     }
 }
