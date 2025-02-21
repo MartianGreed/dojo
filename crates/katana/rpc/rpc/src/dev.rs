@@ -6,8 +6,11 @@ use katana_core::service::block_producer::{BlockProducer, BlockProducerMode, Pen
 use katana_executor::ExecutorFactory;
 use katana_primitives::Felt;
 use katana_rpc_api::dev::DevApiServer;
+use katana_rpc_api::cartridge::CartridgeApiServer;
 use katana_rpc_types::account::Account;
 use katana_rpc_types::error::dev::DevApiError;
+use katana_rpc_types::transaction::InvokeTxResult;
+use starknet::core::types::InvokeTransactionResult;
 
 #[allow(missing_debug_implementations)]
 pub struct DevApi<EF: ExecutorFactory> {

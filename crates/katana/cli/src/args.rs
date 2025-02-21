@@ -224,6 +224,7 @@ impl NodeArgs {
                 // Ensures the `--dev` flag enabled the dev module.
                 if self.development.dev {
                     modules.add(RpcModuleKind::Dev);
+                    modules.add(RpcModuleKind::Cartridge);
                 }
 
                 modules
